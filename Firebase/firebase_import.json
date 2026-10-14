@@ -1,0 +1,10 @@
+{
+  "vehicles": {
+    "car01": {
+      "subscriptions": {
+        "rear_camera": false,
+        "parking_sensor": false
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "vehicles": {
+      ".read": true,
+      "$vehicleId": {
+        "subscriptions": {
+          ".write": true,
+          "rear_camera": { ".validate": "newData.isBoolean()" },
+          "parking_sensor": { ".validate": "newData.isBoolean()" },
+          "$inne": { ".validate": false }
+        }
+      }
+    }
+  }
+}
