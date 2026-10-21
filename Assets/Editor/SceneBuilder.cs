@@ -553,7 +553,11 @@ public static class SceneBuilder
         obraz.uvRect = new Rect(1f, 0f, -1f, 1f); // odbicie lustrzane jak w prawdziwej kamerze cofania
         Text podpis = Tekst(ramka.rectTransform, "Podpis", "KAMERA COFANIA", 22, TextAnchor.MiddleLeft, new Color(1f, 0.85f, 0.2f));
         Zakotwicz(podpis.rectTransform, new Vector2(0f, 1f), Vector2.one, new Vector2(0.5f, 1f), new Vector2(10f, -2f), new Vector2(-20f, 28f));
-        ZbudujLiniePomocnicze(obraz.rectTransform);
+        var linie = Nowy(obraz.rectTransform, "Linie toru").gameObject.AddComponent<RearCameraGuideLines>();
+        Rozciagnij((RectTransform)linie.transform);
+        linie.auto = auto;
+        linie.kameraCofania = rear.kameraCofania;
+        linie.obraz = obraz.rectTransform;
 
         // Blokada (szary panel z kłódką)
         Image blokada = Obraz(pip, "Panel blokady", new Color(0.35f, 0.35f, 0.37f, 0.95f));
@@ -582,34 +586,6 @@ public static class SceneBuilder
         rear.obrazKamery = obraz;
         rear.panelBlokady = blokada.gameObject;
         ramka.gameObject.SetActive(false);
-    }
-
-    private static void ZbudujLiniePomocnicze(RectTransform rodzic)
-    {
-        // Dwie zbieżne linie toru jazdy + poprzeczki odległości (zielona / żółta / czerwona)
-        Color[] kolory = { new Color(0.1f, 0.9f, 0.2f, 0.8f), new Color(1f, 0.85f, 0.1f, 0.8f), new Color(1f, 0.15f, 0.1f, 0.85f) };
-        float[] wysokosci = { 0.55f, 0.35f, 0.15f };
-        float[] szerokosci = { 0.34f, 0.44f, 0.56f };
-        for (int i = 0; i < 3; i++)
-        {
-            Image poprzeczka = Obraz(rodzic, "Linia odleglosci " + i, kolory[i]);
-            RectTransform rt = poprzeczka.rectTransform;
-            rt.anchorMin = new Vector2(0.5f - szerokosci[i] / 2f, wysokosci[i]);
-            rt.anchorMax = new Vector2(0.5f + szerokosci[i] / 2f, wysokosci[i]);
-            rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.anchoredPosition = Vector2.zero;
-            rt.sizeDelta = new Vector2(0f, 4f);
-        }
-        for (int s = -1; s <= 1; s += 2)
-        {
-            Image bok = Obraz(rodzic, s < 0 ? "Tor lewy" : "Tor prawy", new Color(1f, 0.85f, 0.1f, 0.8f));
-            RectTransform rt = bok.rectTransform;
-            rt.anchorMin = rt.anchorMax = new Vector2(0.5f + s * 0.235f, 0.05f);
-            rt.pivot = new Vector2(0.5f, 0f);
-            rt.anchoredPosition = Vector2.zero;
-            rt.sizeDelta = new Vector2(4f, 190f);
-            rt.localRotation = Quaternion.Euler(0f, 0f, s * 22f);
-        }
     }
 
     private static void ZbudujKlodke(RectTransform rodzic)

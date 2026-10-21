@@ -41,6 +41,16 @@ namespace IoT.Subskrypcja
             get { return Mathf.Abs(PredkoscWzdluzna) * 3.6f; }
         }
 
+        /// <summary>
+        /// Krzywizna toru (1/m), po którym auto faktycznie pojedzie przy obecnym skręcie.
+        /// Wynika z modelu skrętu w FixedUpdate: prędkość kątowa = skręt * predkoscSkretu
+        /// * min(1, |v| / 3), więc promień skrętu nie zależy od prędkości poniżej 3 m/s.
+        /// </summary>
+        public float KrzywiznaToru
+        {
+            get { return _skret * predkoscSkretu * Mathf.Deg2Rad / Mathf.Max(3f, Mathf.Abs(PredkoscWzdluzna)); }
+        }
+
         /// <summary>True, gdy auto cofa (bieg R).</summary>
         public bool IsReversing { get; private set; }
 

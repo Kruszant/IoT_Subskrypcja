@@ -72,6 +72,7 @@ Assets/
       FeatureGate.cs
       ParkingSensorLogic.cs
       ReverseDetector.cs
+      GuideLinePath.cs
       SubscriptionPurchase.cs
     SubscriptionConfig.cs
     CloudSubscriptionClient.cs
@@ -79,6 +80,7 @@ Assets/
     DriverInput.cs
     CarController.cs
     RearCameraSystem.cs
+    RearCameraGuideLines.cs
     ParkingSensorSystem.cs
     HUD.cs
     CameraFollow.cs
@@ -92,6 +94,7 @@ Assets/
     ParkingSensorLogicTests.cs
     SubscriptionUrlBuilderTests.cs
     SubscriptionPurchaseTests.cs
+    GuideLinePathTests.cs
   Config/SubscriptionConfig.asset  (tworzony przez SceneBuilder)
   Materials/                       (tworzone przez SceneBuilder)
   Scenes/Demo.unity                (tworzona przez SceneBuilder)
@@ -142,7 +145,12 @@ Docs/Zrzuty/                       zrzuty ekranu do dokumentacji
 - **RearCameraSystem**: kamera na tylnym zderzaku (do tyłu, 22° w dół) renderuje do
   `RenderTexture`, a `RawImage` w prawym górnym rogu pokazuje obraz (Picture-in-Picture,
   z ramką, podpisem "KAMERA COFANIA" i liniami toru jazdy; obraz odbity lustrzanie jak
-  w prawdziwym aucie). Zablokowana: `camera.enabled = false` i szary panel z kłódką
+  w prawdziwym aucie).
+- **RearCameraGuideLines**: dynamiczne linie toru w kamerze cofania. Co klatkę liczą
+  przewidywany tor kół z aktualnego skrętu (`CarController.KrzywiznaToru`, łuk okręgu z
+  `GuideLinePath`), rzutują go przez kamerę cofania na obraz PiP i rysują odcinkami UI.
+  Linie wyginają się przy skręcie A/D, a poprzeczki pokazują 0,5 / 1,5 / 3 m od zderzaka
+  (czerwona / żółta / zielona). Zablokowana: `camera.enabled = false` i szary panel z kłódką
   "Funkcja wymaga subskrypcji". Pole *Tryb Podgladu*: `TylkoPodczasCofania` albo `Zawsze`.
 - **ParkingSensorSystem**: 4 promienie `Physics.Raycast` z tylnego zderzaka (lewy,
   środek-lewy, środek-prawy, prawy, rozchylone o ±6° i ±20°), zasięg 3 m, maska warstw
