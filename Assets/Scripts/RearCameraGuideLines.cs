@@ -96,13 +96,17 @@ namespace IoT.Subskrypcja
 
         private void Rysuj(Image odcinek, Vector2? a, Vector2? b, Color kolor)
         {
-            bool widoczny = a.HasValue && b.HasValue;
+            Vector2 pa = a.GetValueOrDefault(), pb = b.GetValueOrDefault();
+            // Linie nie mogą wychodzić poza obraz kamery (margines na połowę grubości).
+            Rect r = obraz.rect;
+            Rect wnetrze = new Rect(r.x + grubosc / 2f, r.y + grubosc / 2f, r.width - grubosc, r.height - grubosc);
+            bool widoczny = a.HasValue && b.HasValue && GuideLinePath.PrzytnijOdcinek(ref pa, ref pb, wnetrze);
             if (odcinek.enabled != widoczny) odcinek.enabled = widoczny;
             if (!widoczny) return;
 
-            Vector2 delta = b.Value - a.Value;
+            Vector2 delta = pb - pa;
             RectTransform rt = odcinek.rectTransform;
-            rt.anchoredPosition = a.Value;
+            rt.anchoredPosition = pa;
             rt.sizeDelta = new Vector2(delta.magnitude, grubosc);
             rt.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg);
             odcinek.color = new Color(kolor.r, kolor.g, kolor.b, 0.85f);

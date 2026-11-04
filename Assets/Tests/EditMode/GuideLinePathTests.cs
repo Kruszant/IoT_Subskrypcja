@@ -53,5 +53,30 @@ namespace IoT.Subskrypcja.Testy
             Assert.AreEqual(0f, GuideLinePath.KrzywiznaZKata(0f, 2.7f), 1e-6f);
             Assert.AreEqual(Mathf.Tan(30f * Mathf.Deg2Rad) / 2.7f, GuideLinePath.KrzywiznaZKata(30f, 2.7f), 1e-6f);
         }
+
+        [Test]
+        public void Przycinanie_OdcinekWewnatrzBezZmian()
+        {
+            Vector2 a = new Vector2(-10f, -5f), b = new Vector2(20f, 8f);
+            Assert.IsTrue(GuideLinePath.PrzytnijOdcinek(ref a, ref b, new Rect(-50f, -50f, 100f, 100f)));
+            Assert.AreEqual(new Vector2(-10f, -5f), a);
+            Assert.AreEqual(new Vector2(20f, 8f), b);
+        }
+
+        [Test]
+        public void Przycinanie_OdcinekWychodzacyKonczySieNaKrawedzi()
+        {
+            Vector2 a = new Vector2(0f, 0f), b = new Vector2(0f, -200f);
+            Assert.IsTrue(GuideLinePath.PrzytnijOdcinek(ref a, ref b, new Rect(-50f, -50f, 100f, 100f)));
+            Assert.AreEqual(0f, a.y, 1e-4f);
+            Assert.AreEqual(-50f, b.y, 1e-4f);
+        }
+
+        [Test]
+        public void Przycinanie_OdcinekCalkiemPozaJestUkryty()
+        {
+            Vector2 a = new Vector2(60f, 0f), b = new Vector2(90f, 30f);
+            Assert.IsFalse(GuideLinePath.PrzytnijOdcinek(ref a, ref b, new Rect(-50f, -50f, 100f, 100f)));
+        }
     }
 }

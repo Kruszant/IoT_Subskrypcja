@@ -26,6 +26,33 @@ namespace IoT.Subskrypcja
             return new Vector2(r - promien * Mathf.Cos(kat), -promien * Mathf.Sin(kat));
         }
 
+        /// <summary>
+        /// Przycina odcinek a–b do prostokąta (algorytm Lianga–Barsky'ego).
+        /// Zwraca false, gdy odcinek leży w całości poza prostokątem.
+        /// </summary>
+        public static bool PrzytnijOdcinek(ref Vector2 a, ref Vector2 b, Rect prostokat)
+        {
+            Vector2 d = b - a;
+            float t0 = 0f, t1 = 1f;
+            if (!Ogranicz(-d.x, a.x - prostokat.xMin, ref t0, ref t1)) return false;
+            if (!Ogranicz(d.x, prostokat.xMax - a.x, ref t0, ref t1)) return false;
+            if (!Ogranicz(-d.y, a.y - prostokat.yMin, ref t0, ref t1)) return false;
+            if (!Ogranicz(d.y, prostokat.yMax - a.y, ref t0, ref t1)) return false;
+            Vector2 start = a;
+            a = start + d * t0;
+            b = start + d * t1;
+            return true;
+        }
+
+        private static bool Ogranicz(float p, float q, ref float t0, ref float t1)
+        {
+            if (Mathf.Approximately(p, 0f)) return q >= 0f;
+            float t = q / p;
+            if (p < 0f) { if (t > t1) return false; if (t > t0) t0 = t; }
+            else { if (t < t0) return false; if (t < t1) t1 = t; }
+            return true;
+        }
+
         /// <summary>Krzywizna z kąta skrętu kół (model rowerowy): tan(kąt) / rozstaw osi.</summary>
         public static float KrzywiznaZKata(float katSkretuDeg, float rozstawOsi)
         {

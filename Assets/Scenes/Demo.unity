@@ -579,7 +579,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 72
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1711,7 +1711,7 @@ MonoBehaviour:
   zasiegM: 3
   maskaWykrywania:
     serializedVersion: 2
-    m_Bits: 4294967035
+    m_Bits: 51
   okresLogowaniaS: 0.2
 --- !u!4 &306710775
 Transform:
@@ -4858,7 +4858,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 56
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
